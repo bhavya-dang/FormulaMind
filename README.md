@@ -4,6 +4,13 @@
 
 FormulaMind is a Retrieval-Augmented Generation (RAG) chatbot focused on Formula 1 racing. The application provides an interactive way to learn about F1 history, statistics, and current events by intelligently retrieving and synthesizing information from its knowledge base.
 
+![FormulaMind1](./public/scrnsht1.png)
+![FormulaMind2](./public/scrnsht2.png)
+
+## Access Control
+
+As I am using my own API keys, I have added access control to the app to prevent misuse. You can set your own access key using the `NEXT_PUBLIC_ACCESS_KEY` environment variable.
+
 ## Tech Stack
 
 - **Frontend**
@@ -28,6 +35,7 @@ Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live v
 ## Features
 
 - AI-powered F1 knowledge base
+- Access control with a secret key
 - Dark/Light mode support
 - Interactive chat interface
 - Responsive design for all devices (WIP)
@@ -50,8 +58,8 @@ Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live v
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/bhavya-dang/formulamind.git
-   cd formulamind
+   git clone https://github.com/bhavya-dang/FormulaMind.git
+   cd FormulaMind
    ```
 
 2. Install dependencies:
@@ -70,6 +78,7 @@ Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live v
    ASTRA_DB_COLLECTION=your_collection_name_here
    ASTRA_DB_TOKEN=your_db_token_here
    ASTRA_DB_ENDPOINT_URL=your_astra_db_endpoint_url_here
+   NEXT_PUBLIC_ACCESS_KEY=your_access_key_here
    ```
 
 4. Run the development server:
@@ -81,6 +90,8 @@ Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live v
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+6. Login with the access key.
+7. Only share the access key with trusted individuals.
 
 ## Command System
 

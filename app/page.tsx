@@ -111,8 +111,6 @@ export default function Home() {
       }
     }
 
-    abortControllerRef.current = new AbortController();
-
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -120,9 +118,11 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage],
+          messages: [...messages, userMessage].map(({ role, content }) => ({
+            role,
+            content,
+          })),
         }),
-        signal: abortControllerRef.current.signal,
       });
 
       if (!response.ok) {
@@ -130,22 +130,28 @@ export default function Home() {
       }
 
       const data = await response.json();
+
+      if (!data || !data.message) {
+        throw new Error("Invalid response format");
+      }
+
       const assistantMessage: Message = {
         id: crypto.randomUUID(),
-        content: data.choices[0].message.content,
+        content: data.message,
         role: "assistant",
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") {
-        console.log("Request aborted");
-        return;
-      }
-      console.error("Chat error:", err);
+    } catch (error) {
+      console.error("Error:", error);
+      const errorMessage: Message = {
+        id: crypto.randomUUID(),
+        content: "Sorry, I encountered an error. Please try again.",
+        role: "assistant",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
-      abortControllerRef.current = null;
     }
   };
 
