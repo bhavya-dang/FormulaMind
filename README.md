@@ -7,6 +7,8 @@ FormulaMind is a Retrieval-Augmented Generation (RAG) chatbot focused on Formula
 ![FormulaMind1](./public/scrnsht1.png)
 ![FormulaMind2](./public/scrnsht2.png)
 
+> _This app is still under development and a lot of features are yet to be fully functional._
+
 ## Access Control
 
 As I am using my own API keys, I have added access control to the app to prevent misuse. You can set your own access key using the `NEXT_PUBLIC_ACCESS_KEY` environment variable.
@@ -30,7 +32,7 @@ As I am using my own API keys, I have added access control to the app to prevent
 
 ## Live Demo
 
-Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live version.
+Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live version. But, it is recommended to run the app locally as it my needs access key.
 
 ## Features
 
