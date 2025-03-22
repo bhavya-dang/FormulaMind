@@ -1,3 +1,4 @@
+"use client";
 import { Plus, PanelLeftClose, PanelRightClose, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { SidebarProps } from "../types/index";
@@ -12,7 +13,11 @@ export default function Sidebar({
   return (
     <div
       className={`fixed sm:relative h-full transition-all duration-300 ease-in-out ${
-        isExpanded ? (window.innerWidth <= 640 ? "w-0" : "w-64") : "w-0"
+        isExpanded
+          ? typeof window !== "undefined" && window.innerWidth <= 640
+            ? "w-0"
+            : "w-64"
+          : "w-0"
       } ${
         isDarkMode
           ? "bg-black/80"
