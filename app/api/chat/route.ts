@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
         Format responses using markdown where applicable and don't return images.
         ABSOLUTELY DO NOT MENTION THE SOURCE OF YOUR INFORMATION OR WHAT THE CONTEXT DOES OR DOESN'T INCLUDE.
         IF YOU ARE NOT SURE ABOUT THE ANSWER, SAY YOU DON'T KNOW.
+        ABSOLUTELY DO NOT MENTION WHAT THE CONTEXT DOES OR DOESN'T INCLUDE.
         -------------
         START CONTEXT
         ${docContext}

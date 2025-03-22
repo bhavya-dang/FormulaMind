@@ -131,13 +131,13 @@ export default function Home() {
 
       const data = await response.json();
 
-      if (!data || !data.message) {
+      if (!data || !data.choices || !data.choices[0]?.message?.content) {
         throw new Error("Invalid response format");
       }
 
       const assistantMessage: Message = {
         id: crypto.randomUUID(),
-        content: data.message,
+        content: data.choices[0].message.content,
         role: "assistant",
       };
 
@@ -449,8 +449,8 @@ export default function Home() {
                                     ? "bg-violet-500"
                                     : "bg-violet-500"
                                   : isDarkMode
-                                  ? "bg-black/50"
-                                  : "bg-gray-100"
+                                  ? "bg-white/85"
+                                  : "bg-black"
                                 : isDarkMode
                                 ? "bg-black/30"
                                 : "bg-gray-50"
@@ -470,7 +470,13 @@ export default function Home() {
                             ) : (
                               <p
                                 className={`whitespace-pre-wrap ${
-                                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                                  isDarkMode
+                                    ? message.role === "user"
+                                      ? "text-black"
+                                      : "text-white"
+                                    : message.role === "user"
+                                    ? "text-white"
+                                    : "text-gray-700"
                                 }`}
                               >
                                 {message.content}
