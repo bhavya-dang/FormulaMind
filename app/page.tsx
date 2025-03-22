@@ -333,7 +333,7 @@ export default function Home() {
           <div className="p-4">
             <div className="max-w-3xl ml-20 flex items-center">
               <p
-                className={`text-2xl font-bold mb-4 font-satoshi ${
+                className={`text-2xl font-bold mb-4 ${
                   isDarkMode
                     ? "bg-gradient-to-r from-white to-gray-300"
                     : "bg-gradient-to-r from-gray-900 to-gray-700"
@@ -353,7 +353,7 @@ export default function Home() {
               <div className="space-y-6">
                 <div className="text-center">
                   <h2
-                    className={`text-3xl sm:text-4xl font-bold mb-4 font-satoshi ${
+                    className={`text-3xl sm:text-4xl font-bold mb-4 ${
                       isDarkMode
                         ? "bg-gradient-to-r from-white to-gray-300"
                         : "bg-gradient-to-r from-gray-900 to-gray-700"
@@ -382,7 +382,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   {exampleQuestions.map((example, index) => (
                     <ExampleButton
                       key={index}

@@ -15,6 +15,11 @@ const {
 
 let embeddingPipeline: any;
 
+// Track which URLs have been processed
+const processedUrlsFile = "processed_urls.json";
+import fs from "fs";
+
+// Existing URLs to scrape
 const f1Data = [
   "https://www.formula1.com/",
   "https://www.formula1.com/en/results.html/2024/drivers.html",
@@ -27,7 +32,7 @@ const f1Data = [
   "https://en.wikipedia.org/wiki/2025_Formula_One_World_Championship",
   "https://evrimagaci.org/tpg/2025-formula-1-season-kicks-off-with-thrilling-chinese-grand-prix-269074",
   "https://www.formula1.com/en/latest",
-  // yet to create embeddings for the below pages
+  // New URLs to scrape
   "https://www.formula1.com/en/results/2025/drivers",
   "https://www.formula1.com/en/results/2025/constructors",
   "https://www.formula1.com/en/results/2025/races",
@@ -38,7 +43,6 @@ const f1Data = [
   "https://www.formula1.com/en/results/2025/sprint-race",
   "https://www.formula1.com/en/results/2025/sprint-race-results",
   "https://www.formula1.com/en/results/2025/sprint-race-results-by-driver",
-  "https://www.formula1.com/en/results/2025/sprint-race-results-by-constructor",
   "https://www.formula1.com/en/results/2025/sprint-race-results-by-constructor",
 ];
 
@@ -53,6 +57,27 @@ const splitter = new RecursiveCharacterTextSplitter({
   chunkOverlap: 100,
 });
 
+// Get previously processed URLs or initialize empty array
+const getProcessedUrls = () => {
+  try {
+    if (fs.existsSync(processedUrlsFile)) {
+      return JSON.parse(fs.readFileSync(processedUrlsFile, "utf8"));
+    }
+  } catch (error) {
+    console.error("Error reading processed URLs file:", error);
+  }
+  return [];
+};
+
+// Save processed URLs to file
+const saveProcessedUrls = (urls) => {
+  try {
+    fs.writeFileSync(processedUrlsFile, JSON.stringify(urls, null, 2));
+  } catch (error) {
+    console.error("Error saving processed URLs:", error);
+  }
+};
+
 const createCollection = async (
   similarityMetric: SimilarityMetric = "dot_product"
 ) => {
@@ -62,46 +87,75 @@ const createCollection = async (
     "feature-extraction",
     "Xenova/all-MiniLM-L6-v2"
   );
-  const res = await db.createCollection(ASTRA_DB_COLLECTION, {
-    vector: {
-      dimension: 384, // Changed to match MiniLM-L6-v2 output dimension
-      metric: similarityMetric,
-    },
-  });
-  console.log(res);
+
+  try {
+    const res = await db.createCollection(ASTRA_DB_COLLECTION, {
+      vector: {
+        dimension: 384, // MiniLM-L6-v2 output dimension
+        metric: similarityMetric,
+      },
+    });
+    console.log("Collection created:", res);
+  } catch (error) {
+    // Collection might already exist, continue anyway
+    console.log("Collection might already exist, continuing...", error);
+  }
 };
 
 const loadData = async () => {
   const collection = await db.collection(ASTRA_DB_COLLECTION);
+  const processedUrls = getProcessedUrls();
+  const newlyProcessedUrls = [...processedUrls]; // Copy to track new additions
 
-  for (const url of f1Data) {
-    const content = await scrapePage(url);
-    const chunks = await splitter.splitText(content);
+  // Filter out already processed URLs
+  const urlsToProcess = f1Data.filter((url) => !processedUrls.includes(url));
 
-    for (const chunk of chunks) {
-      // Generate embeddings using the sentence transformer model
-      const output = await embeddingPipeline(chunk, {
-        pooling: "mean",
-        normalize: true,
-      });
-      const vector = Array.from(output.data);
+  console.log(`Found ${urlsToProcess.length} new URLs to process`);
 
-      const res = await collection.insertOne({
-        $vector: vector,
-        text: chunk,
-      });
-      console.log(res);
+  for (const url of urlsToProcess) {
+    console.log(`Processing ${url}...`);
+    try {
+      const content = await scrapePage(url);
+      const chunks = await splitter.splitText(content);
+
+      console.log(`Generated ${chunks.length} chunks from ${url}`);
+
+      for (const chunk of chunks) {
+        // Generate embeddings using the sentence transformer model
+        const output = await embeddingPipeline(chunk, {
+          pooling: "mean",
+          normalize: true,
+        });
+        const vector = Array.from(output.data);
+
+        const res = await collection.insertOne({
+          $vector: vector,
+          text: chunk,
+          url: url, // Store source URL for reference
+          timestamp: new Date().toISOString(), // Add timestamp for tracking
+        });
+        console.log(res);
+      }
+
+      // Mark URL as processed
+      newlyProcessedUrls.push(url);
+      saveProcessedUrls(newlyProcessedUrls);
+      console.log(`Successfully processed ${url}`);
+    } catch (error) {
+      console.error(`Error processing ${url}:`, error);
     }
   }
 };
 
 const scrapePage = async (url: string) => {
+  console.log(`Scraping ${url}...`);
   const loader = new PuppeteerWebBaseLoader(url, {
     launchOptions: {
       headless: true,
     },
     gotoOptions: {
       waitUntil: "domcontentloaded",
+      timeout: 60000, // Increase timeout to 60s for slower sites
     },
     evaluate: async (page, browser) => {
       const result = await page.evaluate(() => document.body.innerHTML);

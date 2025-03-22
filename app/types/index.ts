@@ -1,6 +1,5 @@
 export interface Example {
   question: string;
-  color: "blue" | "green" | "purple" | "red";
 }
 
 export interface Message {

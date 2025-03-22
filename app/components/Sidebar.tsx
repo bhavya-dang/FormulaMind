@@ -12,14 +12,14 @@ export default function Sidebar({
   return (
     <div
       className={`fixed sm:relative h-full transition-all duration-300 ease-in-out ${
-        isExpanded ? "w-64" : "w-0"
+        isExpanded ? (window.innerWidth <= 640 ? "w-0" : "w-64") : "w-0"
       } ${
         isDarkMode
           ? "bg-black/80"
           : `bg-white shadow-sm ${isExpanded ? "border-r border-gray-300" : ""}`
       }`}
     >
-      <div className="flex flex-col h-full">
+      <div className="hidden md:flex flex-col h-full">
         <div className="p-4 flex items-center justify-between">
           <button
             onClick={toggleDarkMode}
@@ -56,7 +56,7 @@ export default function Sidebar({
             onClick={onNewChat}
             className={`w-full flex hover:cursor-pointer items-center gap-3 p-3 rounded-lg transition-colors ${
               isDarkMode
-                ? "text-gray-300 hover:bg-black/20"
+                ? "text-gray-300 hover:bg-white/30"
                 : "text-gray-700 hover:bg-black/20"
             }`}
           >
