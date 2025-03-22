@@ -1,6 +1,14 @@
-import { Plus, PanelLeftClose, PanelRightClose, Sun, Moon } from "lucide-react";
+import {
+  Plus,
+  PanelLeftClose,
+  PanelRightClose,
+  Sun,
+  Moon,
+  LogOut,
+} from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { SidebarProps } from "../types/index";
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar({
   onNewChat,
@@ -8,6 +16,15 @@ export default function Sidebar({
   setIsExpanded,
 }: SidebarProps) {
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <div
@@ -65,14 +82,13 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* HIDDEN BECAUSE OF SIZE ISSUE WHEN SIDEBAR IS EXPANDED */}
-        {/* <div
+        <div
           className={`p-4 border-t ${
             isDarkMode ? "border-gray-800/50" : "border-gray-200"
           }`}
         >
           <button
-            onClick={toggleDarkMode}
+            onClick={handleLogout}
             className={`w-full flex items-center ${
               isExpanded ? "gap-3" : "justify-center"
             } hover:cursor-pointer p-3 rounded-lg transition-colors ${
@@ -81,14 +97,10 @@ export default function Sidebar({
                 : "text-gray-700 hover:bg-gray-300"
             }`}
           >
-            {isDarkMode ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-            {isExpanded && <span>{isDarkMode ? "Dark" : "Light"}</span>}
+            <LogOut className="h-5 w-5" />
+            {isExpanded && <span>Logout</span>}
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );

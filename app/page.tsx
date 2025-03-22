@@ -19,6 +19,9 @@ import {
 import { exampleQuestions } from "./constants/index";
 import { useTheme } from "./context/ThemeContext";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./context/AuthContext";
+import { toast } from "sonner";
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -31,6 +34,14 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
 
   function onClick() {
     window.location.href = "/";
@@ -143,6 +154,7 @@ export default function Home() {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
+      toast.error("Failed to send message");
       console.error("Error:", error);
       const errorMessage: Message = {
         id: crypto.randomUUID(),
@@ -316,6 +328,15 @@ export default function Home() {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  const handleNewChat = () => {
+    setMessages([]);
+    setInput("");
+  };
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div
       className={`flex h-screen transition-colors duration-300 ${
@@ -323,7 +344,7 @@ export default function Home() {
       }`}
     >
       <Sidebar
-        onNewChat={() => setMessages([])}
+        onNewChat={handleNewChat}
         isExpanded={isSidebarExpanded}
         setIsExpanded={setIsSidebarExpanded}
       />
