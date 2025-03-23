@@ -59,8 +59,8 @@ Visit [https://lightsout.bhavyadang.in](https://lightsout.bhavyadang.in) to try 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/bhavya-dang/LightsOut.git
-   cd LightsOut
+   git clone https://github.com/bhavya-dang/lightsout.git
+   cd lightsout
    ```
 
 2. Install dependencies:
