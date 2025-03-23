@@ -340,7 +340,7 @@ export default function Home() {
                 } bg-clip-text text-transparent`}
               >
                 <Link href={""} onClick={onClick}>
-                  FormulaMind
+                  LightsOut
                 </Link>
               </p>
             </div>
@@ -359,7 +359,7 @@ export default function Home() {
                         : "bg-gradient-to-r from-gray-900 to-gray-700"
                     } bg-clip-text text-transparent`}
                   >
-                    FormulaMind
+                    LightsOut
                   </h2>
                   <p
                     className={`text-lg font-inter ${

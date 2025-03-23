@@ -1,11 +1,10 @@
-# FormulaMind
+# LightsOut
 
 > Your AI-powered Formula 1 Companion
 
-FormulaMind is a Retrieval-Augmented Generation (RAG) chatbot focused on Formula 1 racing. The application provides an interactive way to learn about F1 history, statistics, and current events by intelligently retrieving and synthesizing information from its knowledge base.
+LightsOut is a Retrieval-Augmented Generation (RAG) chatbot focused on Formula 1 racing. The application provides an interactive way to learn about F1 history, statistics, and current events by intelligently retrieving and synthesizing information from its knowledge base.
 
-![FormulaMind1](./public/scrnsht1.png)
-![FormulaMind2](./public/scrnsht2.png)
+![lightsout-DEMO](./public/demo.png)
 
 > _This app is still under development and a lot of features are yet to be fully functional._
 
@@ -32,7 +31,7 @@ As I am using my own API keys, I have added access control to the app to prevent
 
 ## Live Demo
 
-Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live version. But, it is recommended to run the app locally as it my needs access key.
+Visit [https://lightsout.bhavyadang.in](https://lightsout.bhavyadang.in) to try the live version. But, it is recommended to run the app locally as it my needs access key.
 
 ## Features
 
@@ -60,8 +59,8 @@ Visit [formulamind.vercel.app](https://formulamind.vercel.app) to try the live v
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/bhavya-dang/FormulaMind.git
-   cd FormulaMind
+   git clone https://github.com/bhavya-dang/LightsOut.git
+   cd LightsOut
    ```
 
 2. Install dependencies:

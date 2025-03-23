@@ -83,7 +83,7 @@ async function saveToVectorDB(chunks: string[], url: string) {
     }
   }
 }
-
+// FIX WEB CRAWLING
 // Function to determine if we should trigger web fallback
 function shouldFallbackToWeb(
   docs: any[],
@@ -190,6 +190,8 @@ export async function POST(req: NextRequest) {
       // Check if we need to do web fallback
       if (shouldFallbackToWeb(docs, vector)) {
         console.log("Similarity below threshold, falling back to web search");
+
+        // ADD UI TOAST MESSAGE WHEN YOU ARE FALLING BACK TO WEB CRAWLER
 
         // Get search URLs
         const searchUrls = generateSearchUrls(latestMessages);

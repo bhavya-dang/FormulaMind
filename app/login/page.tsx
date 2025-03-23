@@ -38,7 +38,7 @@ export default function LoginPage() {
             isDarkMode ? "text-white" : "text-gray-900"
           }`}
         >
-          FormulaMind Access
+          LightsOut Access
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

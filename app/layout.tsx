@@ -6,13 +6,13 @@ import { ThemeProvider } from "./context/ThemeContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FormulaMind",
+  title: "LightsOut",
   description: "Your AI-powered Formula 1 companion",
   openGraph: {
-    title: "FormulaMind",
-    description: "FormulaMind | our AI-powered Formula 1 companion",
+    title: "LightsOut",
+    description: "LightsOut | our AI-powered Formula 1 companion",
     url: "https://formulamind.vercel.app",
-    siteName: "FormulaMind",
+    siteName: "LightsOut",
     images: [
       {
         url: "https://github.com/bhavya-dang/my-website/blob/master/public/racecar.svg?raw=true", // Use a valid absolute URL for the image
